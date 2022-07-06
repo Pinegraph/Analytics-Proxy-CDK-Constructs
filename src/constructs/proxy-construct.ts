@@ -41,12 +41,15 @@ export class ProxyConstruct extends Construct {
         options: {
           requestParameters: {
             "integration.request.path.proxy": "method.request.path.proxy",
+            "integration.request.querystring.uip":
+              "method.request.header.x-forwarded-for",
           },
         },
       }),
       {
         requestParameters: {
           "method.request.path.proxy": true,
+          "method.request.header.x-forwarded-for": true,
         },
       }
     );
