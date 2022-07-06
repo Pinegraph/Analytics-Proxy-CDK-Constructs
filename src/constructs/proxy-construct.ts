@@ -23,7 +23,7 @@ export class ProxyConstruct extends Construct {
   }
 
   public addProxy(id: string, baseUrl: string, method: string = "GET") {
-    const namespace = this.api.root.addResource(id + method);
+    const namespace = this.api.root.addResource(id);
     const proxyResource = new apiGateway.ProxyResource(
       this,
       `${this.api.restApiName}ProxyResource${method}${id}`,

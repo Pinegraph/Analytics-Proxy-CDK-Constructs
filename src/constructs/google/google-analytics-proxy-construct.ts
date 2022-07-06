@@ -7,6 +7,8 @@ import { ProxyConstruct } from "../proxy-construct";
 
 export class GoogleAnalyticsProxyConstruct extends Construct {
   // https://developers.google.com/tag-platform/tag-manager/web
+  scriptBucket: Bucket;
+  proxyAPI: ProxyConstruct;
   constructor(construct: Construct, id: string, props: { gtmID: string }) {
     super(construct, id);
     const apiName = "GoogleAnalyticsProxy";
@@ -15,8 +17,8 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
       description: "An API Gateway proxy to the google analytics website.",
       endpointType: EndpointType.REGIONAL,
     });
+    this.proxyAPI = proxy;
 
-    proxy.addProxy("ga", "https://www.google-analytics.com", "GET");
     proxy.addProxy("ga", "https://www.google-analytics.com", "POST");
 
     const gtagScript = fs
@@ -27,19 +29,21 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
       .replaceAll("G-ELITECDKEX", props.gtmID)
       .replaceAll(
         `"https://"+a+".google-analytics.com/g/collect"`,
-        `"${proxy.api.url}/prod/ga/g/collect"`
+        `"${proxy.api.url}ga/g/collect"`
       )
       .replaceAll(
         `"https://"+(a?a+".":"")+"analytics.google.com/g/collect"`,
-        `"${proxy.api.url}/prod/ga/g/collect"`
+        `"${proxy.api.url}ga/g/collect"`
       );
 
     const googleGtagScriptBucket = new Bucket(this, "GoogleGTagScript", {
       publicReadAccess: true,
     });
 
+    this.scriptBucket = googleGtagScriptBucket;
+
     new BucketDeployment(this, "DeployGoogleGTagScript", {
-      sources: [Source.data("gtag.js", gtagScript)],
+      sources: [Source.data("g-analy-tics.js", gtagScript)],
       destinationBucket: googleGtagScriptBucket,
     });
   }
