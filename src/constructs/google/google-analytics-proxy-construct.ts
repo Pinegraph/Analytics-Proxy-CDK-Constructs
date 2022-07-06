@@ -23,7 +23,7 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
 
     const gtagScript = fs
       .readFileSync(
-        "node_modules/@pinegraph/analytics-proxy-cdk/lib/constructs/google/gtag.js",
+        "node_modules/@pinegraph/analytics-proxy-cdk-constructs/lib/constructs/google/gtag.js",
         "utf-8"
       )
       .replaceAll("G-ELITECDKEX", props.gtmID)

@@ -1,5 +1,5 @@
 {
-  "name": "@pinegraph/analytics-proxy-cdk",
+  "name": "@pinegraph/analytics-proxy-cdk-constructs",
   "scripts": {
     "build": "tsc && cp src/constructs/google/gtag.js lib/constructs/google/gtag.js",
     "cdk": "cdk"
@@ -18,7 +18,7 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "jest": {
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
@@ -61,7 +61,6 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.30.0-alpha.0",
     "aws-cdk-lib": "^2.30.0",
     "constructs": "^10.1.43",
     "prettier": "^2.7.1"
@@ -72,7 +71,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pinegraph/Analytics-Proxy-CDK.git"
+    "url": "git+https://github.com/Pinegraph/Analytics-Proxy-CDK-Constructs.git"
   },
   "keywords": [
     "gtm",
