@@ -1,10 +1,10 @@
-import { CfnOutput } from "aws-cdk-lib";
 import * as apiGateway from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
 
 export interface ProxyConstructProps {
   readonly apiName: string;
   readonly endpointType: apiGateway.EndpointType;
+  readonly description: string;
 }
 
 export class ProxyConstruct extends Construct {
@@ -13,8 +13,9 @@ export class ProxyConstruct extends Construct {
   constructor(scope: Construct, id: string, props: ProxyConstructProps) {
     super(scope, id);
 
-    this.api = new apiGateway.RestApi(this, "API", {
+    this.api = new apiGateway.RestApi(this, props.apiName + "API", {
       restApiName: props.apiName,
+      description: props.description,
       endpointConfiguration: {
         types: [props.endpointType],
       },
@@ -22,10 +23,10 @@ export class ProxyConstruct extends Construct {
   }
 
   public addProxy(id: string, baseUrl: string, method: string = "GET") {
-    const namespace = this.api.root.addResource(id);
+    const namespace = this.api.root.addResource(id + method);
     const proxyResource = new apiGateway.ProxyResource(
       this,
-      `ProxyResource${method}${id}`,
+      `${this.api.restApiName}ProxyResource${method}${id}`,
       {
         parent: namespace,
         anyMethod: false,
@@ -49,9 +50,5 @@ export class ProxyConstruct extends Construct {
         },
       }
     );
-
-    new CfnOutput(this, `EndPoint${method}${id}`, {
-      value: this.api.urlForPath(proxyResource.path),
-    });
   }
 }

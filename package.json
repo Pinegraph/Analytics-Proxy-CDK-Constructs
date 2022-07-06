@@ -1,7 +1,7 @@
 {
   "name": "@pinegraph/analytics-proxy-cdk",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp src/constructs/google/gtag.js lib/constructs/google/gtag.js",
     "cdk": "cdk"
   },
   "devDependencies": {
@@ -11,10 +11,10 @@
     "jest-junit": "^13",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
+    "prettier": "^2.7.1",
     "standard-version": "^9",
     "ts-jest": "^28.0.5",
-    "typescript": "^4.7.4",
-    "prettier": "^2.7.1"
+    "typescript": "^4.7.4"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
@@ -61,6 +61,7 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.30.0-alpha.0",
     "aws-cdk-lib": "^2.30.0",
     "constructs": "^10.1.43",
     "prettier": "^2.7.1"
