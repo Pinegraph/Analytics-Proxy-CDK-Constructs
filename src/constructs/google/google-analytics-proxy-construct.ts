@@ -5,11 +5,21 @@ import { Construct } from "constructs";
 import fs from "fs";
 import { ProxyConstruct } from "../proxy-construct";
 
+/**
+ * Creates a proxy endpoint for Google Analytics that isn't
+ * detected by ad blockers.
+ */
 export class GoogleAnalyticsProxyConstruct extends Construct {
-  // https://developers.google.com/tag-platform/tag-manager/web
   scriptBucket: Bucket;
   proxyAPI: ProxyConstruct;
-  constructor(construct: Construct, id: string, props: { gtmID: string }) {
+  constructor(
+    construct: Construct,
+    id: string,
+    props: {
+      /* https://developers.google.com/tag-platform/tag-manager/web */
+      gtmID: string;
+    }
+  ) {
     super(construct, id);
     const apiName = "GoogleAnalyticsProxy";
     const proxy = new ProxyConstruct(this, apiName, {
