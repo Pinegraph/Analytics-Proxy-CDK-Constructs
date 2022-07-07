@@ -19,7 +19,15 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
     });
     this.proxyAPI = proxy;
 
-    proxy.addProxy("ga", "https://www.google-analytics.com", "POST");
+    proxy.addProxy("ga", "https://www.google-analytics.com", {
+      "integration.request.path.proxy": "method.request.path.proxy",
+      "integration.request.querystring._uip":
+        "method.request.header.x-forwarded-for",
+      "integration.request.querystring._ua": "method.request.header.user-agent",
+      "integration.request.querystring.uip":
+        "method.request.header.x-forwarded-for",
+      "integration.request.querystring.ua": "method.request.header.user-agent",
+    });
 
     const gtagScript = fs
       .readFileSync(

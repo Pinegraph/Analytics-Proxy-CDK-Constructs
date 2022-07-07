@@ -22,11 +22,11 @@ export class ProxyConstruct extends Construct {
     });
   }
 
-  public addProxy(id: string, baseUrl: string, method: string = "GET") {
+  public addProxy(id: string, baseUrl: string, requestParameters: any) {
     const namespace = this.api.root.addResource(id);
     const proxyResource = new apiGateway.ProxyResource(
       this,
-      `${this.api.restApiName}ProxyResource${method}${id}`,
+      `${this.api.restApiName}ProxyResource${id}`,
       {
         parent: namespace,
         anyMethod: false,
@@ -34,22 +34,19 @@ export class ProxyConstruct extends Construct {
     );
 
     proxyResource.addMethod(
-      method,
+      "ANY",
       new apiGateway.HttpIntegration(`${baseUrl}/{proxy}`, {
         proxy: true,
-        httpMethod: method,
+        httpMethod: "POST",
         options: {
-          requestParameters: {
-            "integration.request.path.proxy": "method.request.path.proxy",
-            "integration.request.querystring.uip":
-              "method.request.header.x-forwarded-for",
-          },
+          requestParameters,
         },
       }),
       {
         requestParameters: {
           "method.request.path.proxy": true,
           "method.request.header.x-forwarded-for": true,
+          "method.request.header.user-agent": true,
         },
       }
     );
