@@ -52,6 +52,11 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
       .replaceAll(
         `"https://"+(a?a+".":"")+"analytics.google.com/g/collect"`,
         `"${proxy.api.url}ga/g/collect"`
+      )
+      .replaceAll(
+        // Some ad blockers differentiate via sendBeacon
+        `Za.sendBeacon`,
+        `(function(...params) { const url = params[0]; const events = params[1]; if (!events) {fetch(url, {mode: 'no-cors'}); return;}for (const event of events.split(/\\r?\\n/)) { fetch(url + "&" + event, {mode: 'no-cors'}) } })`
       );
 
     const googleGtagScriptBucket = new Bucket(this, "GoogleGTagScript", {
