@@ -56,7 +56,7 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
       .replaceAll(
         // Some ad blockers differentiate via sendBeacon
         `Za.sendBeacon`,
-        `(function(...params) { const url = params[0]; const events = params[1]; if (!events) {fetch(url, {mode: 'no-cors'}); return;}for (const event of events.split(/\\r?\\n/)) { fetch(url + "&" + event, {mode: 'no-cors'}) } })`
+        `(function(...params) { const url = params[0]; const events = params[1]; if (!events) {fetch(url); return true;}for (const event of events.split(/\\r?\\n/)) { fetch(url + "&" + event); } return true; })`
       );
 
     const googleGtagScriptBucket = new Bucket(this, "GoogleGTagScript", {
