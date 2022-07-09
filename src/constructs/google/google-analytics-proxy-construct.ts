@@ -18,6 +18,10 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
     props: {
       /* https://developers.google.com/tag-platform/tag-manager/web */
       gtmID: string;
+      /**
+       * Specifying this makes it less prone to accidental deletion.
+       */
+      bucketName?: string;
     }
   ) {
     super(construct, id);
@@ -60,6 +64,7 @@ export class GoogleAnalyticsProxyConstruct extends Construct {
       );
 
     const googleGtagScriptBucket = new Bucket(this, "GoogleGTagScript", {
+      bucketName: props.bucketName || undefined,
       publicReadAccess: true,
     });
 
